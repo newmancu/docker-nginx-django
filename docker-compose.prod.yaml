@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    command: bash -c "cd ./musicapp && gunicorn -w 2 --bind 0.0.0.0:8000 musicapp.wsgi:application"
+    restart: always
+    expose:
+      - 8000
+    depends_on:
+      - db_music
+    volumes:
+      - ./musicapp:/usr/src/web/musicapp
+    env_file:
+      - ./prod.env
+  db_music:
+    image: postgres
+    restart: always
+    ports:
+      - 5435:5432
+    volumes:
+      - db_volume:/var/lib/postgresql
+    env_file:
+      - ./prod.env
+volumes:
+  db_volume:
+    

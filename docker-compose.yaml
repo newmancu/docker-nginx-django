@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    command: python ./musicapp/manage.py runserver 0.0.0.0:8000
+    # command: bash -c "cd ./musicapp && gunicorn -w 2 --bind 0.0.0.0:8000 musicapp.wsgi:application"
+    restart: always
+    # ports:
+    #   - 8000:8000
+    expose:
+      - 8000
+    depends_on:
+      - db_music
+    volumes:
+      - ./musicapp:/usr/src/web/musicapp
+      - static_files:/usr/src/web/staticfiles
+    env_file:
+      - ./dev.env
+  db_music:
+    image: postgres
+    restart: always
+    volumes:
+      - db_volume:/var/lib/postgresql
+    env_file:
+      - ./dev.env
+  nginx_proxy:
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - static_files:/usr/src/web/staticfiles
+    depends_on:
+      - web
+volumes:
+  db_volume:
+  static_files:
+    
