@@ -10,8 +10,7 @@ COPY ./requirements.txt .
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-RUN mkdir /usr/src/web/staticfiles/
-
+RUN mkdir /usr/src/web/staticfiles/ && mkdir /var/log/gunicorn
 
 COPY ./entrypoint.dev.sh .
 ENTRYPOINT [ "./entrypoint.dev.sh" ]
