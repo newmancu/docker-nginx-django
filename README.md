@@ -9,3 +9,5 @@
  * `postgreSQL`
  
 ## Описание принципа работы
+
+![Schema](./assets/schema.png)
